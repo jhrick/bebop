@@ -19,7 +19,7 @@ var DockerfileTmpl string
 var ComposeTmpl string
 
 const (
-	app        = "bebop"
+	app        = "bop"
 	workingDir = "/workspace"
 	service    = "harness"
 )
@@ -28,7 +28,7 @@ var regexProjectName = regexp.MustCompile(`^[a-zA-Z0-9][a-zA-Z0-9_-]{0,39}$`)
 
 func main() {
 	if err := run(os.Args[1:]); err != nil {
-		fmt.Fprintf(os.Stderr, "bebop: %v\n", err)
+		fmt.Fprintf(os.Stderr, "bop: %v\n", err)
 		os.Exit(1)
 	}
 }
@@ -44,7 +44,7 @@ func run(args []string) error {
 		printUsage()
 		return nil
 	case "-v", "--version", "version":
-		fmt.Println("bebop dev")
+		fmt.Println("bop dev")
 		return nil
 	}
 
@@ -81,11 +81,11 @@ func run(args []string) error {
 
 	composeProject, containerName := identifyEnvironment(projectName, execDir)
 	env := append(os.Environ(),
-		"BEBOP_PROJECT_DIR="+execDir,
-		"BEBOP_CONFIG_DIR="+configDir,
-		fmt.Sprintf("BEBOP_UID=%d", os.Getuid()),
-		fmt.Sprintf("BEBOP_GID=%d", os.Getgid()),
-		"BEBOP_CONTAINER_NAME="+containerName,
+		"bop_PROJECT_DIR="+execDir,
+		"bop_CONFIG_DIR="+configDir,
+		fmt.Sprintf("bop_UID=%d", os.Getuid()),
+		fmt.Sprintf("bop_GID=%d", os.Getgid()),
+		"bop_CONTAINER_NAME="+containerName,
 	)
 
 	fmt.Printf("Project:   %s\n", execDir)
@@ -144,7 +144,7 @@ func identifyEnvironment(name, projectDir string) (string, string) {
 	}
 
 	// Compose project names are lowercase and use [a-z0-9_-].
-	project := "bebop-" + slug + "-" + suffix
+	project := "bop-" + slug + "-" + suffix
 	container := project + "-harness"
 	return project, container
 }
@@ -153,10 +153,10 @@ func printUsage() {
 	fmt.Printf(`%s - isolated OpenCode environments using Docker Compose
 
 Usage:
-  bebop <project-name>
+  bop <project-name>
 
 Run this command from the root directory of the project you want OpenCode
-to work on. Bebop installs its Docker templates under ~/.config/bebop on
+to work on. Bop installs its Docker templates under ~/.config/bop on
 first use, starts the environment, and opens OpenCode inside the container.
 
 Options:
